@@ -1,0 +1,32 @@
+# Core
+Django>=5.1,<5.2
+djangorestframework>=3.15,<4.0
+django-cors-headers>=4.6,<5.0
+python-dotenv>=1.0,<2.0
+
+# Auth
+djangorestframework-simplejwt>=5.4,<6.0
+
+# Filtering & Schema
+django-filter>=24.3,<25.0
+drf-spectacular>=0.28,<1.0
+
+# Database
+psycopg[binary]>=3.2,<4.0
+
+# Redis & Cache
+redis>=5.2,<6.0
+django-redis>=5.4,<6.0
+
+# Celery
+celery[redis]>=5.4,<6.0
+
+# HTTP Client
+httpx>=0.28,<1.0
+
+# Dev
+django-debug-toolbar>=4.4,<5.0
+
+# Production
+gunicorn>=23.0,<24.0
+uvicorn[standard]>=0.34,<1.0
