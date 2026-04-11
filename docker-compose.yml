@@ -27,7 +27,10 @@ services:
       retries: 5
 
   web:
-    build: .
+    build:
+      context: .
+      args:
+        DEV: "true"
     command: >
       sh -c "python manage.py migrate &&
              python manage.py runserver 0.0.0.0:8000"
@@ -48,7 +51,10 @@ services:
         condition: service_healthy
 
   celery-worker:
-    build: .
+    build:
+      context: .
+      args:
+        DEV: "true"
     command: celery -A core worker -l info --concurrency=2
     env_file: .env
     environment:
@@ -65,7 +71,10 @@ services:
         condition: service_healthy
 
   celery-beat:
-    build: .
+    build:
+      context: .
+      args:
+        DEV: "true"
     command: celery -A core beat -l info
     env_file: .env
     environment:

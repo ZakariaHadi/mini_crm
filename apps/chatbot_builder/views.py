@@ -23,9 +23,7 @@ class ChatbotViewSet(viewsets.ModelViewSet):
         return ChatbotSerializer
 
     def get_queryset(self) -> QuerySet[Chatbot]:
-        qs = Chatbot.objects.filter(
-            business__owner=self.request.user
-        ).select_related("business")
+        qs = Chatbot.objects.filter(business__owner=self.request.user).select_related("business")
         if self.action != "list":
             qs = qs.prefetch_related("nodes__options")
         return qs

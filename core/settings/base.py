@@ -201,9 +201,7 @@ SPECTACULAR_SETTINGS = {
 # --------------------------------------------------------------------------
 # WhatsApp
 # --------------------------------------------------------------------------
-WHATSAPP_API_URL = os.environ.get(
-    "WHATSAPP_API_URL", "https://graph.facebook.com/v21.0"
-)
+WHATSAPP_API_URL = os.environ.get("WHATSAPP_API_URL", "https://graph.facebook.com/v21.0")
 WHATSAPP_API_TOKEN = os.environ.get("WHATSAPP_API_TOKEN", "")
 WHATSAPP_VERIFY_TOKEN = os.environ.get("WHATSAPP_VERIFY_TOKEN", "")
 WHATSAPP_APP_SECRET = os.environ.get("WHATSAPP_APP_SECRET", "")

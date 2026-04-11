@@ -6,7 +6,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
@@ -15,23 +14,51 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Business',
+            name="Business",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created_at', models.DateTimeField(auto_now_add=True, db_index=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('name', models.CharField(max_length=255, verbose_name='Business Name')),
-                ('whatsapp_phone_number_id', models.CharField(help_text='Meta Business phone number ID.', max_length=50, unique=True, verbose_name='WhatsApp Phone Number ID')),
-                ('whatsapp_number', models.CharField(max_length=20, unique=True, verbose_name='WhatsApp Display Number')),
-                ('is_active', models.BooleanField(default=True, verbose_name='Active')),
-                ('owner', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='businesses', to=settings.AUTH_USER_MODEL, verbose_name='Owner')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True, primary_key=True, serialize=False, verbose_name="ID"
+                    ),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True, db_index=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                ("name", models.CharField(max_length=255, verbose_name="Business Name")),
+                (
+                    "whatsapp_phone_number_id",
+                    models.CharField(
+                        help_text="Meta Business phone number ID.",
+                        max_length=50,
+                        unique=True,
+                        verbose_name="WhatsApp Phone Number ID",
+                    ),
+                ),
+                (
+                    "whatsapp_number",
+                    models.CharField(
+                        max_length=20, unique=True, verbose_name="WhatsApp Display Number"
+                    ),
+                ),
+                ("is_active", models.BooleanField(default=True, verbose_name="Active")),
+                (
+                    "owner",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="businesses",
+                        to=settings.AUTH_USER_MODEL,
+                        verbose_name="Owner",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'business',
-                'verbose_name_plural': 'businesses',
-                'ordering': ['-created_at'],
-                'abstract': False,
-                'indexes': [models.Index(fields=['whatsapp_number'], name='accounts_bu_whatsap_b9b14f_idx')],
+                "verbose_name": "business",
+                "verbose_name_plural": "businesses",
+                "ordering": ["-created_at"],
+                "abstract": False,
+                "indexes": [
+                    models.Index(fields=["whatsapp_number"], name="accounts_bu_whatsap_b9b14f_idx")
+                ],
             },
         ),
     ]

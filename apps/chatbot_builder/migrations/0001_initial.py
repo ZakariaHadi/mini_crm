@@ -5,86 +5,195 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
-        ('accounts', '0001_initial'),
+        ("accounts", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Chatbot',
+            name="Chatbot",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created_at', models.DateTimeField(auto_now_add=True, db_index=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('name', models.CharField(max_length=255, verbose_name='Chatbot Name')),
-                ('is_active', models.BooleanField(default=True, verbose_name='Active')),
-                ('enable_back', models.BooleanField(default=True, verbose_name='Enable Back Navigation')),
-                ('enable_restart', models.BooleanField(default=True, verbose_name='Enable Restart Command')),
-                ('business', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='chatbots', to='accounts.business', verbose_name='Business')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True, primary_key=True, serialize=False, verbose_name="ID"
+                    ),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True, db_index=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                ("name", models.CharField(max_length=255, verbose_name="Chatbot Name")),
+                ("is_active", models.BooleanField(default=True, verbose_name="Active")),
+                (
+                    "enable_back",
+                    models.BooleanField(default=True, verbose_name="Enable Back Navigation"),
+                ),
+                (
+                    "enable_restart",
+                    models.BooleanField(default=True, verbose_name="Enable Restart Command"),
+                ),
+                (
+                    "business",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="chatbots",
+                        to="accounts.business",
+                        verbose_name="Business",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'chatbot',
-                'verbose_name_plural': 'chatbots',
-                'ordering': ['-created_at'],
-                'abstract': False,
+                "verbose_name": "chatbot",
+                "verbose_name_plural": "chatbots",
+                "ordering": ["-created_at"],
+                "abstract": False,
             },
         ),
         migrations.CreateModel(
-            name='Node',
+            name="Node",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created_at', models.DateTimeField(auto_now_add=True, db_index=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('type', models.CharField(choices=[('menu', 'Menu'), ('text', 'Text'), ('template', 'Template'), ('flow', 'Flow'), ('action', 'Action'), ('end', 'End')], max_length=20, verbose_name='Node Type')),
-                ('content', models.JSONField(default=dict, help_text='Flexible JSON content depending on node type.', verbose_name='Node Content')),
-                ('is_start', models.BooleanField(db_index=True, default=False, verbose_name='Start Node')),
-                ('chatbot', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='nodes', to='chatbot_builder.chatbot', verbose_name='Chatbot')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True, primary_key=True, serialize=False, verbose_name="ID"
+                    ),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True, db_index=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                (
+                    "type",
+                    models.CharField(
+                        choices=[
+                            ("menu", "Menu"),
+                            ("text", "Text"),
+                            ("template", "Template"),
+                            ("flow", "Flow"),
+                            ("action", "Action"),
+                            ("end", "End"),
+                        ],
+                        max_length=20,
+                        verbose_name="Node Type",
+                    ),
+                ),
+                (
+                    "content",
+                    models.JSONField(
+                        default=dict,
+                        help_text="Flexible JSON content depending on node type.",
+                        verbose_name="Node Content",
+                    ),
+                ),
+                (
+                    "is_start",
+                    models.BooleanField(db_index=True, default=False, verbose_name="Start Node"),
+                ),
+                (
+                    "chatbot",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="nodes",
+                        to="chatbot_builder.chatbot",
+                        verbose_name="Chatbot",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'node',
-                'verbose_name_plural': 'nodes',
-                'ordering': ['-created_at'],
-                'abstract': False,
+                "verbose_name": "node",
+                "verbose_name_plural": "nodes",
+                "ordering": ["-created_at"],
+                "abstract": False,
             },
         ),
         migrations.CreateModel(
-            name='Option',
+            name="Option",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created_at', models.DateTimeField(auto_now_add=True, db_index=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('type', models.CharField(choices=[('text', 'Text'), ('button', 'Button'), ('list', 'List'), ('checkbox', 'Checkbox')], max_length=20, verbose_name='Option Type')),
-                ('label', models.CharField(max_length=255, verbose_name='Label')),
-                ('value', models.CharField(max_length=50, verbose_name='Value')),
-                ('action', models.JSONField(blank=True, help_text='Optional action to trigger when this option is selected.', null=True, verbose_name='Action Payload')),
-                ('order', models.PositiveSmallIntegerField(default=0, verbose_name='Display Order')),
-                ('next_node', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='incoming_options', to='chatbot_builder.node', verbose_name='Next Node')),
-                ('node', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='options', to='chatbot_builder.node', verbose_name='Parent Node')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True, primary_key=True, serialize=False, verbose_name="ID"
+                    ),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True, db_index=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                (
+                    "type",
+                    models.CharField(
+                        choices=[
+                            ("text", "Text"),
+                            ("button", "Button"),
+                            ("list", "List"),
+                            ("checkbox", "Checkbox"),
+                        ],
+                        max_length=20,
+                        verbose_name="Option Type",
+                    ),
+                ),
+                ("label", models.CharField(max_length=255, verbose_name="Label")),
+                ("value", models.CharField(max_length=50, verbose_name="Value")),
+                (
+                    "action",
+                    models.JSONField(
+                        blank=True,
+                        help_text="Optional action to trigger when this option is selected.",
+                        null=True,
+                        verbose_name="Action Payload",
+                    ),
+                ),
+                (
+                    "order",
+                    models.PositiveSmallIntegerField(default=0, verbose_name="Display Order"),
+                ),
+                (
+                    "next_node",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="incoming_options",
+                        to="chatbot_builder.node",
+                        verbose_name="Next Node",
+                    ),
+                ),
+                (
+                    "node",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="options",
+                        to="chatbot_builder.node",
+                        verbose_name="Parent Node",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'option',
-                'verbose_name_plural': 'options',
-                'ordering': ['order', 'pk'],
-                'abstract': False,
+                "verbose_name": "option",
+                "verbose_name_plural": "options",
+                "ordering": ["order", "pk"],
+                "abstract": False,
             },
         ),
         migrations.AddConstraint(
-            model_name='chatbot',
-            constraint=models.UniqueConstraint(condition=models.Q(('is_active', True)), fields=('business',), name='unique_active_chatbot_per_business'),
+            model_name="chatbot",
+            constraint=models.UniqueConstraint(
+                condition=models.Q(("is_active", True)),
+                fields=("business",),
+                name="unique_active_chatbot_per_business",
+            ),
         ),
         migrations.AddIndex(
-            model_name='node',
-            index=models.Index(fields=['chatbot', 'type'], name='chatbot_bui_chatbot_07ae4e_idx'),
+            model_name="node",
+            index=models.Index(fields=["chatbot", "type"], name="chatbot_bui_chatbot_07ae4e_idx"),
         ),
         migrations.AddConstraint(
-            model_name='node',
-            constraint=models.UniqueConstraint(condition=models.Q(('is_start', True)), fields=('chatbot',), name='unique_start_node_per_chatbot'),
+            model_name="node",
+            constraint=models.UniqueConstraint(
+                condition=models.Q(("is_start", True)),
+                fields=("chatbot",),
+                name="unique_start_node_per_chatbot",
+            ),
         ),
         migrations.AddIndex(
-            model_name='option',
-            index=models.Index(fields=['node', 'value'], name='chatbot_bui_node_id_1f52bc_idx'),
+            model_name="option",
+            index=models.Index(fields=["node", "value"], name="chatbot_bui_node_id_1f52bc_idx"),
         ),
     ]

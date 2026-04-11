@@ -5,7 +5,6 @@ from typing import Any
 
 from apps.accounts.models import Business
 from apps.chatbot_builder.models import Node, Option
-
 from infrastructure.redis import session_store
 
 from .actions import execute_action
@@ -26,9 +25,7 @@ class ConversationEngine:
     Session state lives in Redis, config in Postgres.
     """
 
-    def process(
-        self, business: Business, phone: str, message: str
-    ) -> str | dict[str, Any] | None:
+    def process(self, business: Business, phone: str, message: str) -> str | dict[str, Any] | None:
         session = session_store.get(business.id, phone)
 
         if session is None:
@@ -49,9 +46,7 @@ class ConversationEngine:
             return self._restart(business, phone)
 
         try:
-            node = Node.objects.select_related("chatbot").get(
-                id=session["current_node_id"]
-            )
+            node = Node.objects.select_related("chatbot").get(id=session["current_node_id"])
         except Node.DoesNotExist:
             logger.error("Node %s not found, restarting", session["current_node_id"])
             return self._restart(business, phone)
@@ -73,18 +68,13 @@ class ConversationEngine:
         if next_node is None or next_node.type == Node.NodeType.END:
             persist_conversation(business, phone, session)
             session_store.delete(business.id, phone)
-            end_text = (
-                next_node.content.get("text", "Merci !") if next_node else "Merci !"
-            )
-            return end_text
+            return next_node.content.get("text", "Merci !") if next_node else "Merci !"
 
         session["current_node_id"] = next_node.id
         session_store.save(business.id, phone, session)
         return render_node(next_node)
 
-    def _start_session(
-        self, business: Business, phone: str
-    ) -> str | dict[str, Any]:
+    def _start_session(self, business: Business, phone: str) -> str | dict[str, Any]:
         start_node = (
             Node.objects.filter(chatbot__business=business, is_start=True)
             .select_related("chatbot")
@@ -118,9 +108,7 @@ class ConversationEngine:
         node = Node.objects.get(id=prev_id)
         return render_node(node)
 
-    def _restart(
-        self, business: Business, phone: str
-    ) -> str | dict[str, Any]:
+    def _restart(self, business: Business, phone: str) -> str | dict[str, Any]:
         session_store.delete(business.id, phone)
         return self._start_session(business, phone)
 

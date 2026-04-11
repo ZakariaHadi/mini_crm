@@ -4,32 +4,62 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='OutgoingMessage',
+            name="OutgoingMessage",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created_at', models.DateTimeField(auto_now_add=True, db_index=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('phone', models.CharField(db_index=True, max_length=50, verbose_name='Recipient Phone')),
-                ('content', models.JSONField(verbose_name='Message Content')),
-                ('status', models.CharField(choices=[('pending', 'Pending'), ('sent', 'Sent'), ('failed', 'Failed')], db_index=True, default='pending', max_length=20, verbose_name='Delivery Status')),
-                ('retry_count', models.PositiveSmallIntegerField(default=0, verbose_name='Retry Count')),
-                ('provider_message_id', models.CharField(blank=True, max_length=255, null=True, verbose_name='Provider Message ID')),
-                ('error_detail', models.TextField(blank=True, default='', verbose_name='Error Detail')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True, primary_key=True, serialize=False, verbose_name="ID"
+                    ),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True, db_index=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                (
+                    "phone",
+                    models.CharField(db_index=True, max_length=50, verbose_name="Recipient Phone"),
+                ),
+                ("content", models.JSONField(verbose_name="Message Content")),
+                (
+                    "status",
+                    models.CharField(
+                        choices=[("pending", "Pending"), ("sent", "Sent"), ("failed", "Failed")],
+                        db_index=True,
+                        default="pending",
+                        max_length=20,
+                        verbose_name="Delivery Status",
+                    ),
+                ),
+                (
+                    "retry_count",
+                    models.PositiveSmallIntegerField(default=0, verbose_name="Retry Count"),
+                ),
+                (
+                    "provider_message_id",
+                    models.CharField(
+                        blank=True, max_length=255, null=True, verbose_name="Provider Message ID"
+                    ),
+                ),
+                (
+                    "error_detail",
+                    models.TextField(blank=True, default="", verbose_name="Error Detail"),
+                ),
             ],
             options={
-                'verbose_name': 'outgoing message',
-                'verbose_name_plural': 'outgoing messages',
-                'ordering': ['-created_at'],
-                'abstract': False,
-                'indexes': [models.Index(fields=['status', 'created_at'], name='messaging_o_status_3994af_idx')],
+                "verbose_name": "outgoing message",
+                "verbose_name_plural": "outgoing messages",
+                "ordering": ["-created_at"],
+                "abstract": False,
+                "indexes": [
+                    models.Index(
+                        fields=["status", "created_at"], name="messaging_o_status_3994af_idx"
+                    )
+                ],
             },
         ),
     ]

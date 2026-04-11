@@ -66,6 +66,95 @@ docker compose down -v       # stop + delete volumes (wipes DB)
 
 ---
 
+## Makefile Commands
+
+All commands run inside Docker containers — no local Python install needed. Run `make help` for a quick reference.
+
+### Docker
+
+```bash
+make up               # Start all services in background
+make down             # Stop all services
+make build            # Build/rebuild containers
+make restart          # Restart all services
+make logs             # Tail all container logs
+make logs-web         # Tail web container logs only
+make bash             # Open a bash shell in the web container
+```
+
+### Django
+
+```bash
+make migrate          # Run database migrations
+make makemigrations   # Generate new migration files
+make superuser        # Create a Django superuser
+make check            # Run Django system checks
+make collectstatic    # Collect static files
+make showurls         # List all registered URL patterns
+make shell            # Open Django shell
+make dbshell          # Open PostgreSQL shell
+```
+
+### Code Quality
+
+```bash
+make lint             # Run ruff linter (check only, no changes)
+make lint-fix         # Run ruff linter and auto-fix issues
+make format           # Format all code with ruff
+make format-check     # Check formatting without making changes
+make pylint           # Run pylint on apps/, core/, infrastructure/
+make typecheck        # Run mypy type checker
+```
+
+**Shortcut commands:**
+
+```bash
+make qa               # Run ALL quality checks (lint + format-check + typecheck + Django check)
+make fix              # Auto-fix everything (lint-fix + format)
+```
+
+Typical workflow:
+
+```bash
+# Before committing
+make fix              # auto-fix lint + format
+make qa               # verify everything passes
+
+# Or in CI
+make qa               # fails on any issue
+```
+
+### Testing
+
+```bash
+make test             # Run test suite with pytest
+make test-cov         # Run tests with coverage report
+```
+
+### Celery
+
+```bash
+make celery-worker    # Start celery worker (foreground)
+make celery-beat      # Start celery beat (foreground)
+make celery-logs      # Tail celery worker + beat logs
+```
+
+### Database
+
+```bash
+make flush            # Flush all data (keep tables)
+make reset-db         # Drop & recreate database + run migrations
+make reset-migrations # Delete all migration files and regenerate from scratch
+```
+
+### Cleanup
+
+```bash
+make clean            # Remove __pycache__, .pyc, .pyo files
+```
+
+---
+
 ## Architecture Overview
 
 ```

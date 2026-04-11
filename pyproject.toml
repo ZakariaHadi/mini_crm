@@ -1,0 +1,75 @@
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+src = ["apps", "core", "infrastructure"]
+
+[tool.ruff.lint]
+select = [
+    "F",      # pyflakes
+    "E",      # pycodestyle errors
+    "W",      # pycodestyle warnings
+    "I",      # isort
+    "N",      # pep8-naming
+    "UP",     # pyupgrade
+    "B",      # flake8-bugbear
+    "A",      # flake8-builtins
+    "C4",     # flake8-comprehensions
+    "DJ",     # flake8-django
+    "T20",    # flake8-print
+    "SIM",    # flake8-simplify
+    "RET",    # flake8-return
+    "PTH",    # flake8-use-pathlib
+    "ERA",    # eradicate (commented-out code)
+    "RUF",    # ruff-specific rules
+]
+ignore = [
+    "RUF012",  # mutable class attributes (DRF viewset attrs are intentional)
+    "DJ001",   # null=True on CharField is valid for optional JSON/text
+    "A003",    # shadowing builtins like `type` on model fields
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["apps", "core", "infrastructure"]
+known-third-party = ["django", "rest_framework", "django_filters", "drf_spectacular", "celery"]
+
+[tool.ruff.lint.per-file-ignores]
+"*/migrations/*.py" = ["ALL"]
+"core/settings/*.py" = ["F401", "F403", "E501"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+docstring-code-format = true
+
+[tool.pylint.main]
+load-plugins = ["pylint_django"]
+django-settings-module = "core.settings.dev"
+ignore = ["migrations", "manage.py"]
+
+[tool.pylint."messages control"]
+disable = [
+    "C0114",  # missing-module-docstring
+    "C0115",  # missing-class-docstring
+    "C0116",  # missing-function-docstring
+    "R0903",  # too-few-public-methods
+    "W0223",  # abstract-method (DRF viewsets)
+    "E5110",  # Django-specific abstract
+]
+
+[tool.pylint.format]
+max-line-length = 100
+
+[tool.pylint.design]
+max-args = 8
+max-locals = 15
+
+[tool.mypy]
+python_version = "3.12"
+plugins = ["mypy_django_plugin.main", "mypy_drf_plugin.main"]
+ignore_missing_imports = true
+warn_unused_configs = true
+warn_redundant_casts = true
+check_untyped_defs = true
+
+[tool.django-stubs]
+django_settings_module = "core.settings.dev"

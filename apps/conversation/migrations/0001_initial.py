@@ -5,31 +5,63 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
-        ('accounts', '0001_initial'),
+        ("accounts", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Conversation',
+            name="Conversation",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created_at', models.DateTimeField(auto_now_add=True, db_index=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('user_phone', models.CharField(db_index=True, max_length=50, verbose_name='User Phone Number')),
-                ('data', models.JSONField(default=dict, help_text='All data collected during the conversation.', verbose_name='Collected Data')),
-                ('completed_at', models.DateTimeField(auto_now_add=True, verbose_name='Completed At')),
-                ('business', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='conversations', to='accounts.business', verbose_name='Business')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True, primary_key=True, serialize=False, verbose_name="ID"
+                    ),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True, db_index=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                (
+                    "user_phone",
+                    models.CharField(
+                        db_index=True, max_length=50, verbose_name="User Phone Number"
+                    ),
+                ),
+                (
+                    "data",
+                    models.JSONField(
+                        default=dict,
+                        help_text="All data collected during the conversation.",
+                        verbose_name="Collected Data",
+                    ),
+                ),
+                (
+                    "completed_at",
+                    models.DateTimeField(auto_now_add=True, verbose_name="Completed At"),
+                ),
+                (
+                    "business",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="conversations",
+                        to="accounts.business",
+                        verbose_name="Business",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'conversation',
-                'verbose_name_plural': 'conversations',
-                'ordering': ['-created_at'],
-                'abstract': False,
-                'indexes': [models.Index(fields=['business', 'user_phone'], name='conversatio_busines_a0951b_idx'), models.Index(fields=['completed_at'], name='conversatio_complet_fe7cb6_idx')],
+                "verbose_name": "conversation",
+                "verbose_name_plural": "conversations",
+                "ordering": ["-created_at"],
+                "abstract": False,
+                "indexes": [
+                    models.Index(
+                        fields=["business", "user_phone"], name="conversatio_busines_a0951b_idx"
+                    ),
+                    models.Index(fields=["completed_at"], name="conversatio_complet_fe7cb6_idx"),
+                ],
             },
         ),
     ]

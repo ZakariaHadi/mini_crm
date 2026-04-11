@@ -40,9 +40,7 @@ class WhatsAppClient:
         }
         return self._post(payload)
 
-    def send_template(
-        self, phone: str, template_name: str, language: str = "fr"
-    ) -> dict[str, Any]:
+    def send_template(self, phone: str, template_name: str, language: str = "fr") -> dict[str, Any]:
         payload = {
             "messaging_product": "whatsapp",
             "to": phone,

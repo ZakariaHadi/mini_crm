@@ -41,18 +41,14 @@ def _verify_webhook(request: Request) -> Response:
         return Response(int(challenge), status=status.HTTP_200_OK)
 
     logger.warning("Webhook verification failed — bad token")
-    return Response(
-        {"detail": "Verification failed"}, status=status.HTTP_403_FORBIDDEN
-    )
+    return Response({"detail": "Verification failed"}, status=status.HTTP_403_FORBIDDEN)
 
 
 def _process_webhook(request: Request) -> Response:
     signature = request.META.get("HTTP_X_HUB_SIGNATURE_256", "")
     if not verify_whatsapp_signature(request.body, signature):
         logger.warning("Invalid webhook signature")
-        return Response(
-            {"detail": "Invalid signature"}, status=status.HTTP_403_FORBIDDEN
-        )
+        return Response({"detail": "Invalid signature"}, status=status.HTTP_403_FORBIDDEN)
 
     body: dict[str, Any] = request.data
 
@@ -67,9 +63,7 @@ def _process_webhook(request: Request) -> Response:
     return Response({"status": "ok"}, status=status.HTTP_200_OK)
 
 
-def _handle_incoming_message(
-    phone_number_id: str | None, message: dict[str, Any]
-) -> None:
+def _handle_incoming_message(phone_number_id: str | None, message: dict[str, Any]) -> None:
     if not phone_number_id:
         logger.warning("Missing phone_number_id in webhook payload")
         return
@@ -92,11 +86,7 @@ def _handle_incoming_message(
         if interactive_type == "nfm_reply":
             _handle_flow_response(business, sender_phone, interactive)
         else:
-            reply = (
-                interactive.get("button_reply")
-                or interactive.get("list_reply")
-                or {}
-            )
+            reply = interactive.get("button_reply") or interactive.get("list_reply") or {}
             text = reply.get("id", "")
             _dispatch_to_engine(business, sender_phone, text)
 
@@ -104,30 +94,28 @@ def _handle_incoming_message(
         logger.info("Ignoring unsupported message type: %s", msg_type)
 
 
-def _dispatch_to_engine(
-    business: Business, phone: str, text: str
-) -> None:
+def _dispatch_to_engine(business: Business, phone: str, text: str) -> None:
     response = conversation_engine.process(business, phone, text)
     if response is not None:
         send_message_task.delay(phone, response)
 
 
-def _handle_flow_response(
-    business: Business, phone: str, interactive: dict[str, Any]
-) -> None:
+def _handle_flow_response(business: Business, phone: str, interactive: dict[str, Any]) -> None:
     """Extract nfm_reply payload and delegate to flow handler."""
     nfm_reply = interactive.get("nfm_reply", {})
     response_json = nfm_reply.get("response_json", {})
 
     if isinstance(response_json, str):
         import json
+
         try:
             response_json = json.loads(response_json)
         except json.JSONDecodeError:
             logger.error("Invalid flow response_json: %s", response_json)
             return
 
-    flow_id = response_json.get("flow_token", "").split("_")[1] if "_" in response_json.get("flow_token", "") else ""
+    flow_token = response_json.get("flow_token", "")
+    flow_id = flow_token.split("_")[1] if "_" in flow_token else ""
 
     flow_response = {
         "flow_id": response_json.get("flow_id", flow_id),

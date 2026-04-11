@@ -91,7 +91,7 @@ def external_api_call_task(
             return response.json()
     except (httpx.HTTPStatusError, httpx.RequestError) as exc:
         logger.error("External API call failed: %s", exc)
-        raise self.retry(countdown=2**self.request.retries, exc=exc)
+        raise self.retry(countdown=2**self.request.retries, exc=exc) from exc
 
 
 def _handle_error(

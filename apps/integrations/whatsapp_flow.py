@@ -7,7 +7,6 @@ from apps.accounts.models import Business
 from apps.chatbot_builder.models import Node
 from apps.conversation.renderers import render_node
 from apps.messaging.tasks import send_message_task
-
 from infrastructure.redis import session_store
 
 logger = logging.getLogger(__name__)

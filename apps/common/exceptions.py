@@ -10,16 +10,11 @@ from rest_framework.views import exception_handler
 logger = logging.getLogger(__name__)
 
 
-def custom_exception_handler(
-    exc: Exception, context: dict[str, Any]
-) -> Response | None:
+def custom_exception_handler(exc: Exception, context: dict[str, Any]) -> Response | None:
     response = exception_handler(exc, context)
 
     if response is not None:
-        if (
-            response.status_code == status.HTTP_400_BAD_REQUEST
-            and "detail" not in response.data
-        ):
+        if response.status_code == status.HTTP_400_BAD_REQUEST and "detail" not in response.data:
             response.data = {"errors": response.data}
         response.data["status_code"] = response.status_code
         return response

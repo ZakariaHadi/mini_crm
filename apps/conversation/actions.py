@@ -22,18 +22,14 @@ def execute_action(
     return handler(action, phone, session)
 
 
-def _handle_send_template(
-    action: dict[str, Any], phone: str, session: dict[str, Any]
-) -> None:
+def _handle_send_template(action: dict[str, Any], phone: str, session: dict[str, Any]) -> None:
     from apps.messaging.tasks import send_template_task
 
     send_template_task.delay(phone, action["template_name"])
-    return None
+    return
 
 
-def _handle_api_call(
-    action: dict[str, Any], phone: str, session: dict[str, Any]
-) -> None:
+def _handle_api_call(action: dict[str, Any], phone: str, session: dict[str, Any]) -> None:
     from apps.messaging.tasks import external_api_call_task
 
     external_api_call_task.delay(
@@ -44,7 +40,7 @@ def _handle_api_call(
             "data": session.get("collected_data", {}),
         },
     )
-    return None
+    return
 
 
 def _handle_trigger_flow(
@@ -69,13 +65,16 @@ def _handle_trigger_flow(
         "return_node_id": action.get("return_node_id"),
     }
 
-    send_message_task.delay(phone, {
-        "type": "flow",
-        "flow_id": flow_id,
-        "body_text": action.get("body_text", "Continuer"),
-        "flow_cta": action.get("flow_cta", "Ouvrir"),
-        "screen": action.get("screen"),
-    })
+    send_message_task.delay(
+        phone,
+        {
+            "type": "flow",
+            "flow_id": flow_id,
+            "body_text": action.get("body_text", "Continuer"),
+            "flow_cta": action.get("flow_cta", "Ouvrir"),
+            "screen": action.get("screen"),
+        },
+    )
 
     return session
 

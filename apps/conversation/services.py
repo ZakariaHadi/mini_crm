@@ -10,9 +10,7 @@ from .models import Conversation
 logger = logging.getLogger(__name__)
 
 
-def persist_conversation(
-    business: Business, phone: str, session: dict[str, Any]
-) -> Conversation:
+def persist_conversation(business: Business, phone: str, session: dict[str, Any]) -> Conversation:
     conversation = Conversation.objects.create(
         business=business,
         user_phone=phone,

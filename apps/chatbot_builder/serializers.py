@@ -68,12 +68,13 @@ class ChatbotSerializer(serializers.ModelSerializer):
 
     def validate(self, attrs: dict[str, Any]) -> dict[str, Any]:
         request = self.context.get("request")
-        if request and not request.user.businesses.filter(
-            pk=attrs.get("business", getattr(self.instance, "business_id", None))
-        ).exists():
-            raise serializers.ValidationError(
-                {"business": "You do not own this business."}
-            )
+        if (
+            request
+            and not request.user.businesses.filter(
+                pk=attrs.get("business", getattr(self.instance, "business_id", None))
+            ).exists()
+        ):
+            raise serializers.ValidationError({"business": "You do not own this business."})
         return attrs
 
 
