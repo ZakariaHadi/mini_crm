@@ -142,7 +142,7 @@ reset-db: ## Drop & recreate database + migrate
 
 reset-migrations: ## Delete all migration files and regenerate
 	$(EXEC) find apps -path "*/migrations/*.py" -not -name "__init__.py" -delete
-	$(MANAGE) makemigrations accounts chatbot_builder conversation messaging
+	$(MANAGE) makemigrations main_crm chatbot_builder conversation messaging
 	@echo "Migrations regenerated."
 
 # ──────────────────────────────────────────────

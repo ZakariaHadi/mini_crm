@@ -3,7 +3,7 @@ from __future__ import annotations
 import logging
 from typing import Any
 
-from apps.accounts.models import Business
+from apps.main_crm.models import Business
 from apps.chatbot_builder.models import Node, Option
 from infrastructure.redis import session_store
 

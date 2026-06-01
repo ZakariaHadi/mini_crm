@@ -4,15 +4,15 @@ from django.db.models import QuerySet
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 
-from apps.common.permissions import IsOwnerOrReadOnly
+from apps.common.permissions import IsOwnerOrReadOnly, IsBusinessMember
 
-from .models import Business
-from .serializers import BusinessSerializer
+from ..models import Business
+from ..serializers import BusinessSerializer
 
 
 class BusinessViewSet(viewsets.ModelViewSet):
     serializer_class = BusinessSerializer
-    permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
+    permission_classes = [IsAuthenticated, IsOwnerOrReadOnly, IsBusinessMember]
 
     def get_queryset(self) -> QuerySet[Business]:
         return Business.objects.filter(owner=self.request.user)

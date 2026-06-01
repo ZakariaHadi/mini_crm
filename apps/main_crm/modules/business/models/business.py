@@ -5,7 +5,20 @@ from apps.common.models import TimeStampedModel
 
 
 class Business(TimeStampedModel):
+    class BusinessType(models.TextChoices):
+        DOCTOR = "doctor", "Doctor"
+        COMMERCIAL = "commercial", "Commercial"
+        LOYER = "loyer", "Loyer"
+        RESTAURANT = "restaurant", "Restaurant"
+        BARBER = "barber", "Barber"
+
     name = models.CharField(max_length=255, verbose_name="Business Name")
+    type = models.CharField(
+        max_length=20,
+        choices=BusinessType.choices,
+        verbose_name="Business Type",
+    )
+
     whatsapp_phone_number_id = models.CharField(
         max_length=50,
         unique=True,

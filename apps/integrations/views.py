@@ -10,7 +10,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from apps.accounts.models import Business
+from apps.main_crm.models import Business
 from apps.conversation.engine import conversation_engine
 from apps.messaging.tasks import send_message_task
 

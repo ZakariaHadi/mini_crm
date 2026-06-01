@@ -7,7 +7,7 @@ class Conversation(TimeStampedModel):
     """Persisted record of a completed chatbot conversation."""
 
     business = models.ForeignKey(
-        "accounts.Business",
+        "main_crm.Business",
         on_delete=models.CASCADE,
         related_name="conversations",
         verbose_name="Business",

@@ -4,7 +4,7 @@ from typing import Any
 
 from rest_framework import serializers
 
-from .models import Business
+from ..models import Business
 
 
 class BusinessSerializer(serializers.ModelSerializer):

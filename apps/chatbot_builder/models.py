@@ -5,7 +5,7 @@ from apps.common.models import TimeStampedModel
 
 class Chatbot(TimeStampedModel):
     business = models.ForeignKey(
-        "accounts.Business",
+        "main_crm.Business",
         on_delete=models.CASCADE,
         related_name="chatbots",
         verbose_name="Business",
